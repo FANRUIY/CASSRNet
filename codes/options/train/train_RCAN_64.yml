@@ -1,0 +1,78 @@
+#### general settings
+name: RCAN_branch3_X2_64
+use_tb_logger: true
+model: sr
+distortion: sr
+scale: 2
+gpu_ids: [0]
+
+#### network structures
+network_G:
+  which_model_G: RCAN
+  n_resblocks: 20 #number of residual blocks
+  n_feats: 64 #64、48、36number of feature maps
+  n_resgroups: 10
+  res_scale: 0.1 #residual scaling
+  n_colors: 3
+  rgb_range: 255
+  scale: 2
+  #reduction: 16
+
+#### datasets
+datasets:
+  train:
+    name: DF2K_divide
+    mode: LQGT_rcan
+    dataroot_GT: /home/ruiyang/FRY/classSR_yolov8/datasets_seg_divide/DF2K_divide/HR/class3
+    dataroot_LQ: /home/ruiyang/FRY/classSR_yolov8/datasets_seg_divide/DF2K_divide/LR/X2/class3
+    #dataroot_GT: /home/ruiyang/FRY/classSR_yolov8/datasets/DIV2K/DIV2K_train_HR
+    #dataroot_LQ: /home/ruiyang/FRY/classSR_yolov8/datasets/DIV2K/DIV2K_train_LR_bicubic/X4
+
+
+    use_shuffle: true
+    n_workers: 6  # per GPU
+    batch_size: 8
+    GT_size: 96
+    use_flip: true
+    use_rot: true
+    color: RGB
+  val:
+    name: Set5
+    mode: LQGT_rcan
+    dataroot_GT: /home/ruiyang/FRY/classSR_yolov8/datasets_seg/Set5/GTmod12
+    dataroot_LQ: /home/ruiyang/FRY/classSR_yolov8/datasets_seg/Set5/LRbicx2
+    #dataroot_GT: /home/ruiyang/FRY/classSR_yolov8/datasets/Set5/GTmod12
+    #dataroot_LQ: /home/ruiyang/FRY/classSR_yolov8/datasets/Set5/LRbicx4
+
+#### path
+path:
+  pretrain_model_G: ~
+  strict_load: true
+  resume_state: ~
+
+#### training settings: learning rate scheme, loss
+train:
+  lr_G: !!float 1e-4
+  lr_scheme: CosineAnnealingLR_Restart
+  beta1: 0.9
+  beta2: 0.99
+  niter: 1000000
+  warmup_iter: -1  # no warm up
+  T_period: [500000]
+  restarts: [500000]
+  restart_weights: [1]
+  eta_min: !!float 1e-7
+  lr_gamma: 0.5
+  clear_state: 1000000
+
+  pixel_criterion: l1
+  #pixel_criterion: strong
+  pixel_weight: 1.0
+
+  manual_seed: 10
+  val_freq: 5000
+
+#### logger
+logger:
+  print_freq: 100
+  save_checkpoint_freq: 5000

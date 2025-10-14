@@ -1,0 +1,63 @@
+#### general settings
+name: test_RCAN_X4_64
+model: sr
+distortion: sr
+scale: 4
+crop_border: ~  # crop border when evaluation. If None(~), crop the scale pixels
+gpu_ids: [0]
+
+#### network structures
+network_G:
+  which_model_G: RCAN
+  n_resblocks: 20 #number of residual blocks
+  n_feats: 64 #number of feature maps 36  48  64 
+  n_resgroups: 10
+  res_scale: 0.1 #residual scaling
+  n_colors: 3
+  rgb_range: 255
+  scale: 4
+  #reduction: 16
+
+datasets:
+  test1:
+    name: class1
+    mode: LQGT_rcan
+    dataroot_GT: /home/ruiyang/FRY/classSR_yolov8/datasets_seg/Set5/GTmod12
+    dataroot_LQ: /home/ruiyang/FRY/classSR_yolov8/datasets_seg/Set5/LRbicx4
+  test2:
+    name: class2
+    mode: LQGT_rcan
+    dataroot_GT: /home/ruiyang/FRY/classSR_yolov8/datasets_seg/Set14/HR
+    dataroot_LQ: /home/ruiyang/FRY/classSR_yolov8/datasets_seg/Set14/X4
+  test3:
+    name: class3
+    mode: LQGT_rcan
+    dataroot_GT: /home/ruiyang/FRY/classSR_yolov8/datasets_seg/manga109/HR
+    dataroot_LQ: /home/ruiyang/FRY/classSR_yolov8/datasets_seg/manga109/X4
+  test4:
+    name: class4
+    mode: LQGT_rcan
+    #dataroot_GT: /home/ruiyang/FRY/classSR_yolov8/datasets_seg/urban100/HR
+   # dataroot_LQ: /home/ruiyang/FRY/classSR_yolov8/datasets_seg/urban100/X4
+  #test5:
+    #name: class5
+    #mode: LQGT_rcan
+    #dataroot_GT: /home/ruiyang/FRY/classSR_yolov8/datasets_seg/BSDS100/HR
+    #dataroot_LQ: /home/ruiyang/FRY/classSR_yolov8/datasets_seg/BSDS100/X4
+  
+    #dataroot_GT: /home/ruiyang/FRY/classSR_yolov8/datasets/DIV2K/DIV2K_valid_HR
+    #dataroot_LQ: /home/ruiyang/FRY/classSR_yolov8/datasets/DIV2K/DIV2K_valid_LR_bicubic/X4
+    #dataroot_GT: /home/ruiyang/FRY/classSR_yolov8/datasets/Set5/GTmod12
+    #dataroot_LQ: /home/ruiyang/FRY/classSR_yolov8/datasets/Set5/LRbicx4
+    #dataroot_GT: /home/ruiyang/FRY/classSR_yolov8/datasets_seg/Set5/GTmod12
+    #dataroot_LQ: /home/ruiyang/FRY/classSR_yolov8/datasets_seg/Set5/LRbicx4
+    #dataroot_GT: /home/ruiyang/FRY/classSR_yolov8/datasets_seg_divide/DIV2K_divide/DIV2K_valid_HR/class3
+    #dataroot_LQ: /home/ruiyang/FRY/classSR_yolov8/datasets_seg_divide/DIV2K_divide/DIV2K_valid_LR_bicubic/X4/class3
+ 
+
+
+#### path
+path:
+  #pretrain_model_G: /home/ruiyang/FRY/classSR_yolov8/experiments/RCAN_branch3_X4_64_3CLASS_HAO/models/500000_G.pth
+  #pretrain_model_G: /home/ruiyang/FRY/classSR_yolov8/pre_trained_models/SR_X4/RCAN_branch3.pth
+  pretrain_model_G: /home/ruiyang/FRY/classSR_yolov8/experiments/RCAN_branch3_X3_64/models/500000_G.pth

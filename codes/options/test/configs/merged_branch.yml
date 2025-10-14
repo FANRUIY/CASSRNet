@@ -1,0 +1,77 @@
+name: test_RCAN_multibranch
+model: sr
+gpu_ids: [0]
+distortion: sr
+scale: 4
+crop_border: ~
+
+# ---------------- 统一测试数据集 ----------------
+datasets:
+  test1:
+    name: class1
+    mode: LQGT_rcan
+    dataroot_GT: /home/ruiyang/FRY/classSR_yolov8/datasets_seg_divide/DIV2K_divide/DIV2K_valid_HR
+    dataroot_LQ: /home/ruiyang/FRY/classSR_yolov8/datasets_seg_divide/DIV2K_divide/DIV2K_valid_LR_bicubic/X4
+    data_type: img
+    io_backend:
+      type: disk
+    n_channels: 3
+    batch_size: 1
+    num_worker: 1
+    use_flip: false
+    use_rot: false
+    color: RGB
+    phase: test
+    GT_size: 256
+    scale: 4
+
+# ---------------- 分支模型配置 ----------------
+branches:
+  branch1:
+    network_G:
+      which_model_G: RCAN
+      n_resblocks: 20
+      n_feats: 36
+      n_resgroups: 10
+      res_scale: 0.1
+      scale: 4
+    path:
+      pretrain_model_G: /home/ruiyang/FRY/classSR_yolov8/pre_trained_models/SR_X4/RCAN_branch1.pth
+      strict_load: false
+
+  branch2:
+    network_G:
+      which_model_G: RCAN
+      n_resblocks: 20
+      n_feats: 48
+      n_resgroups: 10
+      res_scale: 0.1
+      scale: 4
+    path:
+      pretrain_model_G: /home/ruiyang/FRY/classSR_yolov8/pre_trained_models/SR_X4/RCAN_branch2.pth
+      strict_load: false
+
+  branch3:
+    network_G:
+      which_model_G: RCAN
+      n_resblocks: 20
+      n_feats: 64
+      n_resgroups: 10
+      res_scale: 0.1
+      scale: 4
+    path:
+      pretrain_model_G: /home/ruiyang/FRY/classSR_yolov8/pre_trained_models/SR_X4/RCAN_branch3.pth
+      strict_load: false
+
+# ---------------- 复杂度阈值 ----------------
+complexity_thresholds:
+  low: 212.79
+  high: 317.18
+
+# ---------------- 其他 ----------------
+suffix: ~
+verbose: true
+dist: false
+path:
+  results_root: /home/ruiyang/FRY/classSR_yolov8/results/branch123_X4
+  
